@@ -1,0 +1,2 @@
+20221216	13:13:21	d5eafa8a-0fcc-48a7-a97b-2e3b4fbcea28	Error: Not allowed by CORS
+20221216	17:19:08	afd59066-5051-4044-aaee-4e23425bc3ad	TypeError: Cannot read properties of undefined (reading 'filter')
