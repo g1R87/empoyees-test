@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config();
 const fsPromises = require('fs').promises;
 const path = require('path')
+
+
 const handleLogin = async (req, res) => {
   const {user, pwd} = req.body;
   if(!user || !pwd) return res.status(400).json({"ststus": "error", "message":"un/pwd required"})
@@ -24,7 +26,7 @@ const handleLogin = async (req, res) => {
             "username": foundUser.username
         },
         process.env.ACCESS_TOKEN_SECRET,
-        {expiresIn: '60s'}
+        {expiresIn: '3m'}
 
     );
     const refreshToken = jwt.sign(
@@ -44,8 +46,9 @@ const handleLogin = async (req, res) => {
         path.join(__dirname,'..','model','users.json'),
         JSON.stringify(usersDB.users)
     )
-
-    res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24* 60 *60*1000})  //maxage in miliseconds
+    //send refresh token not as a json but as an "httpOnly cookie" which in invulnerable to js.
+    res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24* 60 *60*1000})  //maxage of the cookie in miliseconds
+    
     res.json({accessToken});
     } 
   else res.sendStatus(401);
